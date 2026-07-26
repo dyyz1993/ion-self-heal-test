@@ -44,4 +44,10 @@ mod tests {
         let m = Monitor::new("test", 60);
         assert_eq!(m.greet("World"), "[test] Hello, World!");
     }
+
+    #[test]
+    fn test_process_special_chars() {
+        let m = Monitor::new("t", 1);
+        assert_eq!(m.process_output(Some("hello\nworld".into())), "[t] hello\nworld");
+    }
 }

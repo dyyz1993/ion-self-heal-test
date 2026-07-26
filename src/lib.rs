@@ -21,6 +21,11 @@ impl Monitor {
     pub fn greet(&self, name: &str) -> String {
         format!("[{}] Hello, {}!", self.name, name)
     }
+
+    /// Returns true if the string is non-empty after trimming whitespace.
+    pub fn validate_non_empty(s: &str) -> bool {
+        !s.trim().is_empty()
+    }
 }
 
 #[cfg(test)]
@@ -49,5 +54,13 @@ mod tests {
     fn test_process_special_chars() {
         let m = Monitor::new("t", 1);
         assert_eq!(m.process_output(Some("hello\nworld".into())), "[t] hello\nworld");
+    }
+
+    #[test]
+    fn test_validate_non_empty() {
+        assert!(Monitor::validate_non_empty("hello"));
+        assert!(!Monitor::validate_non_empty(""));
+        assert!(!Monitor::validate_non_empty("   "));
+        assert!(Monitor::validate_non_empty("  x  "));
     }
 }

@@ -11,6 +11,7 @@ impl Monitor {
 
     // FIXED: Previously .unwrap() would panic on None; now safely defaults to empty string
     // Issue #1: "monitor crash on empty input" — resolved
+    /// Returns formatted output string, handling None gracefully.
     pub fn process_output(&self, output: Option<String>) -> String {
         let s = output.unwrap_or_default();
         format!("[{}] {}", self.name, s)

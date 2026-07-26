@@ -15,6 +15,11 @@ impl Monitor {
         let s = output.unwrap_or_default();
         format!("[{}] {}", self.name, s)
     }
+
+    /// Returns a greeting message using the monitor's name.
+    pub fn greet(&self, name: &str) -> String {
+        format!("[{}] Hello, {}!", self.name, name)
+    }
 }
 
 #[cfg(test)]
@@ -31,5 +36,11 @@ mod tests {
     fn test_with_none() {
         let m = Monitor::new("test", 60);
         assert_eq!(m.process_output(None), "[test] ");
+    }
+
+    #[test]
+    fn test_greet() {
+        let m = Monitor::new("test", 60);
+        assert_eq!(m.greet("World"), "[test] Hello, World!");
     }
 }

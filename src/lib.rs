@@ -9,10 +9,10 @@ impl Monitor {
         Self { name: name.to_string(), interval_secs: interval }
     }
 
-    // BUG: This unwrap will panic if output is empty
-    // Issue: "monitor crash on empty input"
+    // FIXED: Previously .unwrap() would panic on None; now safely defaults to empty string
+    // Issue #1: "monitor crash on empty input" — resolved
     pub fn process_output(&self, output: Option<String>) -> String {
-        let s = output.unwrap();
+        let s = output.unwrap_or_default();
         format!("[{}] {}", self.name, s)
     }
 }
@@ -27,5 +27,9 @@ mod tests {
         assert_eq!(m.process_output(Some("hello".into())), "[test] hello");
     }
 
-    // Note: no test for empty case — that's where the bug lives
+    #[test]
+    fn test_with_none() {
+        let m = Monitor::new("test", 60);
+        assert_eq!(m.process_output(None), "[test] ");
+    }
 }
